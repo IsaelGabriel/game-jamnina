@@ -10,7 +10,7 @@ public static class Engine {
     
     private static Color _clearColor = Color.DarkGray;
 
-    private static IScene? _currentScene = null;
+    private static IScene? _currentScene = new TesterScene();
 
     static void Main() {
         Raylib.InitWindow(DefaultWindowWidth, DefaultWindowHeight, WindowTitle);
@@ -43,9 +43,9 @@ public static class Engine {
 
             Raylib.ClearBackground(_clearColor);
 
-            /*(IRenderable renderable in renderables) {
+            foreach(IRenderable renderable in renderables) {
                 if(renderable.Visible()) renderable.Render();
-            }*/
+            }
 
             if(_shouldDrawFPS) Raylib.DrawFPS(0, 0); // FPS has maximum render priority.
 
