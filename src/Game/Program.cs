@@ -2,6 +2,8 @@
 using Raylib_cs;
 
 public static class Engine {
+    public const int TileRadius = 16;
+    
     public const int DefaultWindowWidth = 600;
     public const int DefaultWindowHeight = 600;
     private const string WindowTitle = "Game Jamnina";
@@ -51,7 +53,7 @@ public static class Engine {
 
 
                 foreach(IRenderable renderable in renderables) {
-                    if(renderable.Visible()) renderable.Render();
+                    if(renderable.visible) renderable.Render();
                 }
 
 

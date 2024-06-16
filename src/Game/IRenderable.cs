@@ -1,7 +1,7 @@
 public interface IRenderable {
     public int renderLayer { get; }
+    public bool visible { get; set; }
     public void Render();
-    public bool Visible();
 
     public int CompareRenderLayerTo(IRenderable renderable) {
         int difference = (int) renderable.renderLayer - (int) this.renderLayer;
