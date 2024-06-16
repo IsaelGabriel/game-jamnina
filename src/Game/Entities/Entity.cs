@@ -18,6 +18,11 @@ public class Entity : IUpdatable, IRenderable, IPositionable
     protected Color _color = Color.DarkBlue;
     protected float _rotation = 0f;
 
+    public int health {
+        get => (int) _health;
+        set => _health = (uint) Math.Max(0, value);
+    }
+
 
     public Entity(Vector2 position, uint health, Color color) {
         this._position = position;
@@ -45,5 +50,4 @@ public class Entity : IUpdatable, IRenderable, IPositionable
     }
 
     public virtual void Update() {}
-
 }
