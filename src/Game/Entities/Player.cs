@@ -1,40 +1,36 @@
 using Raylib_cs;
 using System.Numerics;
+
 public class Player : IPositionable, IRenderable, IUpdatable
 {
-    private const int RenderLayer = 0;
+    private const RenderLayer DefaultRenderLayer = RenderLayer.Player;
     private const int UpdatePriority = 0;
     private const float BaseSpeed = 200f;
     private Vector2 _position = new Vector2(400, 400);
     private Vector2 _size = new Vector2(32, 32);
     private float _rotationDegrees = 0f;
 
-    #region IPositionable
-        public Vector2 GetPosition()
-        {
-            return this._position;
-        }
 
-        public Vector2 SetPosition(Vector2 position)
-        {
-            this._position = position;
-            return this._position;
+
+    #region IPositionable
+
+        public Vector2 position {
+            get => _position;
+            set => _position = value; 
         }
 
     #endregion
 
     #region IRenderable
-        public int GetRenderLayer()
-        {
-            return RenderLayer;
+        public int renderLayer {
+            get => (int) DefaultRenderLayer;
         }
-
 
         public void Render()
         {
-            Rectangle rec = new Rectangle(_position, _size);
-            //Raylib.DrawRectanglePro(rec, _size * 0.5f, _rotationDegrees * 360f, Color.Gold);
             Raylib.DrawPoly(_position + _size/2, 3, _size.Length() / 2, _rotationDegrees * 180f / (float) Math.PI, Color.Gold);
+
+            Raylib.DrawPoly(_position + _size/2 + new Vector2((float) Math.Cos((double) _rotationDegrees), (float) Math.Sin((double) _rotationDegrees)) * _size, 8, 4, _rotationDegrees * 180f / (float) Math.PI, Color.Red);
         }
 
         public bool Visible()
