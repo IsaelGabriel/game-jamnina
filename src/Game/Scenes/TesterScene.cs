@@ -1,7 +1,9 @@
+using System.Numerics;
 using Raylib_cs;
 
 public class TesterScene : IScene
 {
+    private const int TargetViewHeight = 400;
     private Player _player = new Player();
     private List<IRenderable> _renderables = new List<IRenderable>();
     private List<IUpdatable> _updatables = new List<IUpdatable>();
@@ -14,6 +16,11 @@ public class TesterScene : IScene
             new BlankEntity(120, 290, 4, 16, Color.Lime),
             new BlankEntity(300, 300, 6, 16, Color.DarkPurple)
         ]);
+    }
+
+    public void Start() {
+        Engine.SetCameraZoom(Engine.DefaultWindowHeight / TargetViewHeight);
+        Engine.SetCameraTarget(Vector2.One * TargetViewHeight / 2);
     }
 
 

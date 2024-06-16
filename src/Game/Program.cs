@@ -2,8 +2,8 @@
 using Raylib_cs;
 
 public static class Engine {
-    private const int DefaultWindowWidth = 600;
-    private const int DefaultWindowHeight = 600;
+    public const int DefaultWindowWidth = 600;
+    public const int DefaultWindowHeight = 600;
     private const string WindowTitle = "Game Jamnina";
     private const int DefaultTargetFPS = 30;
     private static bool _shouldDrawFPS = true;
@@ -19,6 +19,8 @@ public static class Engine {
         Raylib.InitWindow(DefaultWindowWidth, DefaultWindowHeight, WindowTitle);
         _camera = new Camera2D(Vector2.Zero, Vector2.Zero, 0f, 1f);
         Raylib.SetTargetFPS(DefaultTargetFPS);
+
+        _currentScene?.Start();
 
         while(!Raylib.WindowShouldClose()) {
             Update();
@@ -60,5 +62,9 @@ public static class Engine {
 
     public static void SetCameraTarget(Vector2 target) {
         _camera.Target = target;
+    }
+
+    public static void SetCameraZoom(float zoom) {
+        _camera.Zoom = Math.Max(1f, zoom);
     }
 }
