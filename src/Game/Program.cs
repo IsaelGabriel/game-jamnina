@@ -1,4 +1,4 @@
-﻿using System.Data;
+﻿using System.Numerics;
 using Raylib_cs;
 
 public static class Engine {
@@ -7,12 +7,16 @@ public static class Engine {
     private const string WindowTitle = "Game Jamnina";
     private const int DefaultTargetFPS = 30;
     private static bool _shouldDrawFPS = true;
+    private static Camera2D _camera;
     
     private static Color _clearColor = Color.DarkGray;
 
     private static IScene? _currentScene = new TesterScene();
 
+    public static Camera2D Camera{ get => _camera; }
+
     static void Main() {
+        _camera = new Camera2D(Vector2.Zero, Vector2.Zero, 0f, 1.0000001f);
         Raylib.InitWindow(DefaultWindowWidth, DefaultWindowHeight, WindowTitle);
 
         Raylib.SetTargetFPS(DefaultTargetFPS);
@@ -39,16 +43,20 @@ public static class Engine {
 
         renderables.Sort((a, b)=>a.CompareRenderLayerTo(b));
 
+        _camera.Target = (new Vector2(300,300));
+        
         Raylib.BeginDrawing();
-
             Raylib.ClearBackground(_clearColor);
+            Raylib.BeginMode2D(_camera);
 
-            foreach(IRenderable renderable in renderables) {
-                if(renderable.Visible()) renderable.Render();
-            }
 
+                foreach(IRenderable renderable in renderables) {
+                    if(renderable.Visible()) renderable.Render();
+                }
+
+
+            Raylib.EndMode2D();
             if(_shouldDrawFPS) Raylib.DrawFPS(0, 0); // FPS has maximum render priority.
-
         Raylib.EndDrawing();
     }
 }
