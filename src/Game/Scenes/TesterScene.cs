@@ -21,13 +21,14 @@ public class TesterScene : IScene
     }
 
     public void Start() {
-        Engine.SetCameraZoom(Engine.DefaultWindowHeight / TargetViewHeight);
+        Engine.SetCameraZoom(Raylib.GetScreenHeight() / TargetViewHeight);
         Engine.SetCameraTarget(-Vector2.One * TargetViewHeight / 2);
+        _player.Start();
         foreach(Entity entity in _entities) {
             entity.Start();
+            Link.Links.Add(new Link([_player, entity]));
         }
     }
-
 
     public List<IRenderable> GetRenderables()
     {
@@ -57,6 +58,10 @@ public class TesterScene : IScene
     {
         List<IRenderable> renderables = GetRenderables();
         renderables.Sort((a, b)=>a.CompareRenderLayerTo(b));
+        foreach(Link link in Link.Links) {
+            Raylib.DrawLineEx(link.entities[0].position, link.entities[1].position, 4f, Color.Green);
+            Raylib.DrawCircleLinesV((link.entities[0].position + link.entities[1].position) / 2, 8, Color.Green);
+        }
         foreach(IRenderable renderable in renderables) {
             if(renderable.visible) renderable.Render();
         }
