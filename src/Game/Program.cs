@@ -33,28 +33,16 @@ public static class Engine {
     }
 
     private static void Update() {
-        List<IUpdatable> updatables = _currentScene?.GetUpdatables()?? [];
-        
-        updatables.Sort((a, b)=>a.CompareUpdatePriorityTo(b));
-        foreach(IUpdatable updatable in updatables) {
-            updatable.Update();
-        }
+        _currentScene?.Update();
     }
 
     private static void Render() {
-        List<IRenderable> renderables = _currentScene?.GetRenderables()?? [];
-
-        renderables.Sort((a, b)=>a.CompareRenderLayerTo(b));
-
-        
         Raylib.BeginDrawing();
             Raylib.ClearBackground(_clearColor);
             Raylib.BeginMode2D(_camera);
 
-
-                foreach(IRenderable renderable in renderables) {
-                    if(renderable.visible) renderable.Render();
-                }
+                
+                _currentScene?.Render();
 
 
             Raylib.EndMode2D();

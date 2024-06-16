@@ -42,4 +42,24 @@ public class TesterScene : IScene
         updatables.AddRange(_entities);
         return updatables.Distinct().ToList();
     }
+
+    public void Update()
+    {
+        List<IUpdatable> updatables = GetUpdatables();
+        updatables.Sort((a, b)=>a.CompareUpdatePriorityTo(b));
+
+        foreach(IUpdatable updatable in updatables) {
+            updatable.Update();
+        }
+    }
+
+    public void Render()
+    {
+        List<IRenderable> renderables = GetRenderables();
+        renderables.Sort((a, b)=>a.CompareRenderLayerTo(b));
+        foreach(IRenderable renderable in renderables) {
+            if(renderable.visible) renderable.Render();
+        }
+    
+    }
 }

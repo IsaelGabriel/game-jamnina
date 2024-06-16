@@ -3,7 +3,7 @@ using Raylib_cs;
 
 public class Entity : IUpdatable, IRenderable, IPositionable
 {
-    protected int _updatePriority, _renderLayer;
+    protected int _updatePriority = 0, _renderLayer = (int) RenderLayer.Entity;
     protected bool _visible = true;
     protected Vector2 _position;
 
