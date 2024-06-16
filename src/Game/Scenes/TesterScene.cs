@@ -1,3 +1,4 @@
+using Raylib_cs;
 
 public class TesterScene : IScene
 {
@@ -8,6 +9,11 @@ public class TesterScene : IScene
     public TesterScene() {
         _renderables.Add(_player);
         _updatables.Add(_player);
+        _renderables.AddRange((List<IRenderable>) [
+            new BlankEntity(400, 400, 5, 16, Color.SkyBlue),
+            new BlankEntity(120, 290, 4, 16, Color.Lime),
+            new BlankEntity(300, 300, 6, 16, Color.DarkPurple)
+        ]);
     }
 
 

@@ -28,9 +28,9 @@ public class Player : IPositionable, IRenderable, IUpdatable
 
         public void Render()
         {
-            Raylib.DrawPoly(_position + _size/2, 3, _size.Length() / 2, _rotationDegrees * 180f / (float) Math.PI, Color.Gold);
+            Raylib.DrawPoly(_position + _size/2, 3, _size.X / 2, _rotationDegrees * 180f / (float) Math.PI, Color.Gold);
 
-            Raylib.DrawPoly(_position + _size/2 + new Vector2((float) Math.Cos((double) _rotationDegrees), (float) Math.Sin((double) _rotationDegrees)) * _size, 8, 4, _rotationDegrees * 180f / (float) Math.PI, Color.Red);
+            Raylib.DrawPoly(_position + _size/2 + new Vector2((float) Math.Cos((double) _rotationDegrees), (float) Math.Sin((double) _rotationDegrees)) * _size/2, 8, 4, _rotationDegrees * 180f / (float) Math.PI, Color.Red);
         }
 
         public bool Visible()

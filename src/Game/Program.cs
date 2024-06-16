@@ -16,9 +16,8 @@ public static class Engine {
     public static Camera2D Camera{ get => _camera; }
 
     static void Main() {
-        _camera = new Camera2D(Vector2.Zero, Vector2.Zero, 0f, 1.0000001f);
         Raylib.InitWindow(DefaultWindowWidth, DefaultWindowHeight, WindowTitle);
-
+        _camera = new Camera2D(Vector2.Zero, Vector2.Zero, 0f, 1f);
         Raylib.SetTargetFPS(DefaultTargetFPS);
 
         while(!Raylib.WindowShouldClose()) {
@@ -43,7 +42,6 @@ public static class Engine {
 
         renderables.Sort((a, b)=>a.CompareRenderLayerTo(b));
 
-        _camera.Target = (new Vector2(300,300));
         
         Raylib.BeginDrawing();
             Raylib.ClearBackground(_clearColor);
@@ -58,5 +56,9 @@ public static class Engine {
             Raylib.EndMode2D();
             if(_shouldDrawFPS) Raylib.DrawFPS(0, 0); // FPS has maximum render priority.
         Raylib.EndDrawing();
+    }
+
+    public static void SetCameraTarget(Vector2 target) {
+        _camera.Target = target;
     }
 }
