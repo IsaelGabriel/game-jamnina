@@ -16,6 +16,7 @@ public static class Engine {
     private static IScene? _currentScene = new TesterScene();
 
     public static Camera2D Camera{ get => _camera; }
+    public static IScene? CurrentScene{ get => _currentScene; }
 
     static void Main() {
         Raylib.InitWindow(DefaultWindowWidth, DefaultWindowHeight, WindowTitle);

@@ -10,6 +10,8 @@ public class TesterScene : IScene
 
     private List<Entity> _entities;
 
+    public List<Entity> entities => _entities;
+
     public TesterScene() {
         _renderables.Add(_player);
         _updatables.Add(_player);
