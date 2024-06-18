@@ -30,14 +30,12 @@ public class TesterScene : IScene
 
     public List<IRenderable> GetRenderables()
     {
-        List<IRenderable> renderables = _renderables;
-        return renderables.Distinct().ToList();
+        return _renderables.Distinct().ToList();
     }
 
     public List<IUpdatable> GetUpdatables()
     {
-        List<IUpdatable> updatables = _updatables;
-        return updatables.Distinct().ToList();
+        return _updatables.Distinct().ToList();
     }
 
     public void Update()
@@ -77,8 +75,10 @@ public class TesterScene : IScene
     {
         if(obj == null) return;
         if(typeof(T).GetInterfaces().Contains(typeof(IRenderable)))
-            _renderables.Remove((IRenderable) obj);
+            while(_renderables.Contains((IRenderable) obj))
+                _renderables.Remove((IRenderable) obj);
         if(typeof(T).GetInterfaces().Contains(typeof(IUpdatable)))
-            _updatables.Remove((IUpdatable) obj);
+            while(_updatables.Contains((IUpdatable) obj))
+                _updatables.Remove((IUpdatable) obj);
     }
 }

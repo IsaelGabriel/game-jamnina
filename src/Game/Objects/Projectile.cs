@@ -1,12 +1,13 @@
 using System.Numerics;
 using Raylib_cs;
 
-class Projectile : IUpdatable, IRenderable
+public class Projectile : IUpdatable, IRenderable
 {
-    private readonly RectCollider _collider;
+    protected readonly RectCollider _collider;
     private bool _visible = true;
-    private bool _hasCountdown = false;
-    private float _countdown = 0f;
+    protected bool _toDestroy = false;
+    protected float _countdown = 0f;
+    protected float _duration = 0f;
 
     public int updatePriority => 5;
 
@@ -25,8 +26,9 @@ class Projectile : IUpdatable, IRenderable
         _collider.solid = false;
         this.velocity = velocity;
         this.angle = angle;
+        this._duration = duration;
         this._countdown = duration;
-        if(duration > 0f) _hasCountdown = true;
+        Engine.CurrentScene?.AddObject(this);
     }
 
     public virtual void Render()
@@ -36,23 +38,23 @@ class Projectile : IUpdatable, IRenderable
 
     public virtual void Update()
     {
+        if(_toDestroy) return;
         Vector2 movement = new Vector2((float) Math.Cos(angle), (float) Math.Sin(angle)) * velocity * Raylib.GetFrameTime();
-        if(_hasCountdown) {
+        if(_duration > 0f) {
             _countdown -= Raylib.GetFrameTime();
             if(_countdown <= 0f) {
                 Destroy();
                 return;
             }
         }
-        HandleCollision(_collider.MoveWithCollision(movement));
+        RectCollider? collision = _collider.MoveWithCollision(movement);
+        if(collision != null) HandleCollision(collision);
     }
 
-    protected virtual void HandleCollision(RectCollider? collider) {
-        if(collider == null) return;
-        Destroy();
-    }
+    protected virtual void HandleCollision(RectCollider collider) {}
 
-    public virtual void Destroy() {
+    public void Destroy() {
+        _toDestroy = true;
         Engine.CurrentScene?.RemoveObject(this);
     }
 }

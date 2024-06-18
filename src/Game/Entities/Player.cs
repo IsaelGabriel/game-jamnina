@@ -36,8 +36,8 @@ public class Player : Entity
         _rotation = (float) Math.Atan2(rotationVector.Y, rotationVector.X);
 
         if(Raylib.IsMouseButtonPressed(MouseButton.Left)) {
-            Vector2 projectilePosition = collider.center + new Vector2((float) Math.Cos(_rotation), (float) Math.Sin(_rotation)) * (Engine.TileRadius + 4);
-            Engine.CurrentScene?.AddObject(new LinkProjectile(projectilePosition, Vector2.One * 8, BaseSpeed, _rotation, 0f, this));
+            Vector2 projectilePosition = collider.center + new Vector2((float) Math.Cos(_rotation), (float) Math.Sin(_rotation)) * (Engine.TileRadius + 16);
+            Engine.CurrentScene?.AddObject(new LinkProjectile(projectilePosition, Vector2.One * 8, BaseSpeed, _rotation, 0f, this));     
         }
     }
 }

@@ -1,7 +1,7 @@
 using System.Numerics;
 using Raylib_cs;
 
-class LinkProjectile : Projectile
+public class LinkProjectile : Projectile
 {
     private Entity _linkSource;
 
@@ -10,13 +10,12 @@ class LinkProjectile : Projectile
         _linkSource = linkSource;        
     }
 
-    protected override void HandleCollision(RectCollider? collider)
+    protected override void HandleCollision(RectCollider collider)
     {
-        if(collider == null) return;
         if(collider.owner == null || collider.owner == _linkSource) return;
 
         new Link([_linkSource, collider.owner]);
-        
+
         Destroy();
     }
 
