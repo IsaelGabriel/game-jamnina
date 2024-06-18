@@ -14,7 +14,7 @@ class Wall : IRenderable, IPositionable
     public RectCollider collider => _collider;
 
     public Wall(Vector2 position) {
-        _collider = new RectCollider(position, Vector2.One * Engine.TileRadius * 2, null);
+        _collider = new RectCollider(position, Vector2.One * Engine.TileRadius * 2, null, (RectCollider r) => {});
     }
 
     public void Render()

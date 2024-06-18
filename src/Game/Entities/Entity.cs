@@ -30,20 +30,20 @@ public class Entity : IUpdatable, IRenderable
     }
 
     public Entity(Vector2 position, Vector2 size, uint health, Color color) {
-        this._collider = new RectCollider(position, size, this);
+        this._collider = new RectCollider(position, size, this, HandleCollision);
         this._health = health;
         this._color = color;
     }
 
     public Entity(float x, float y, float width, float height, uint health, Color color) {
-        this._collider = new RectCollider(new Vector2(x,y), new Vector2(width, height), this);
+        this._collider = new RectCollider(new Vector2(x,y), new Vector2(width, height), this, HandleCollision);
         this._health = health;
         this._color = color;
     }
 
     public Entity(Vector2 position)
     {
-        this._collider = new RectCollider(position, Vector2.One * Engine.TileRadius * 2, this);
+        this._collider = new RectCollider(position, Vector2.One * Engine.TileRadius * 2, this, HandleCollision);
     }
 
     public virtual void Start() {}
@@ -56,4 +56,5 @@ public class Entity : IUpdatable, IRenderable
     }
 
     public virtual void Update() {}
+    public virtual void HandleCollision(RectCollider collision) {}
 }

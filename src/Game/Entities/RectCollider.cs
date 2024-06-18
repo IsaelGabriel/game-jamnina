@@ -1,4 +1,5 @@
 using System.Numerics;
+using System.Security.Cryptography;
 
 public class RectCollider : IPositionable
 {
@@ -22,6 +23,9 @@ public class RectCollider : IPositionable
         }
     }
     public bool solid = true;
+
+    public delegate void CollisionHandler(RectCollider c);
+    public CollisionHandler HandleCollision;
 
     #region Borders
         public Vector2 topLeft {
@@ -55,15 +59,16 @@ public class RectCollider : IPositionable
     #endregion
 
 
-    public RectCollider(Vector2 position, Vector2 size, Entity? owner) {
+    public RectCollider(Vector2 position, Vector2 size, Entity? owner, CollisionHandler collisionHandler) {
         this.position = position;
         this.size = size;
         this._owner = owner;
         _colliders.Add(this);
+        this.HandleCollision = collisionHandler;
     }
 
-    public static RectCollider SquareCollider(Vector2 position, float side, Entity? owner) {
-        return new RectCollider(position, Vector2.One * side, owner);
+    public static RectCollider SquareCollider(Vector2 position, float side, Entity? owner, CollisionHandler collisionHandler) {
+        return new RectCollider(position, Vector2.One * side, owner, collisionHandler);
     }
 
     public static void ResetColliders() {
@@ -131,15 +136,18 @@ public class RectCollider : IPositionable
 
         foreach(RectCollider collider in _colliders) {
             if(collider == this) continue;
-            if(!collider.solid) continue;
             Vector2 trimmedMovement = TrimMovementWithCollider(collider, movement);
             if(!trimmedMovement.Equals(movement)) {
                 collision = collider;
             }
-            movement = trimmedMovement;
+            if(collider.solid) movement = trimmedMovement;
         }
 
         position += movement;
+        if(collision != null) {
+            if(solid) collision.HandleCollision(this);
+            if(collision.solid) HandleCollision(collision);
+        }
 
         return collision;
     }

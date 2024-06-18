@@ -3,7 +3,7 @@ using Raylib_cs;
 
 class ShooterEntity : Entity
 {
-    private const float _projectileSpeed = 195f;
+    private const float _projectileSpeed = 220f;
     private const float _projectileDuration = 10f;
     private float _interval = 5f;
     private float _intervalCount = 5f;

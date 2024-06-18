@@ -1,4 +1,5 @@
 using System.Numerics;
+using System.Reflection.Metadata;
 using Raylib_cs;
 
 public class Projectile : IUpdatable, IRenderable
@@ -23,7 +24,7 @@ public class Projectile : IUpdatable, IRenderable
     public RectCollider collider => _collider;
 
     public Projectile(Vector2 center, Vector2 size, float velocity, float angle, float duration) {
-        _collider = new RectCollider(center - size/2, size, null);
+        _collider = new RectCollider(center - size/2, size, null, HandleCollision);
         _collider.solid = false;
         this.velocity = velocity;
         this.angle = angle;
@@ -49,13 +50,13 @@ public class Projectile : IUpdatable, IRenderable
             }
         }
         RectCollider? collision = _collider.MoveWithCollision(movement);
-        if(collision != null) HandleCollision(collision);
     }
 
     protected virtual void HandleCollision(RectCollider collider) {}
 
     public void Destroy() {
         _toDestroy = true;
+        collider.Destroy();
         Engine.CurrentScene?.RemoveObject(this);
     }
 }
