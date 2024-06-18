@@ -47,7 +47,7 @@ class Projectile : IUpdatable, IRenderable
         HandleCollision(_collider.MoveWithCollision(movement));
     }
 
-    public virtual void HandleCollision(RectCollider? collider) {
+    protected virtual void HandleCollision(RectCollider? collider) {
         if(collider == null) return;
         Destroy();
     }

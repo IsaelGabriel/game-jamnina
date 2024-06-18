@@ -25,7 +25,6 @@ public class TesterScene : IScene
         foreach(Entity entity in _updatables) {
             if(entity == _player) continue;
             entity.Start();
-            Link.Links.Add(new Link([_player, entity]));
         }
     }
 
@@ -55,10 +54,6 @@ public class TesterScene : IScene
     {
         List<IRenderable> renderables = GetRenderables();
         renderables.Sort((a, b)=>a.CompareRenderLayerTo(b));
-        foreach(Link link in Link.Links) {
-            Raylib.DrawLineEx(link.entities[0].collider.center, link.entities[1].collider.center, 4f, Color.Green);
-            Raylib.DrawCircleLinesV((link.entities[0].collider.center + link.entities[1].collider.center) / 2, 8, Color.Green);
-        }
         foreach(IRenderable renderable in renderables) {
             if(renderable.visible) renderable.Render();
         }
