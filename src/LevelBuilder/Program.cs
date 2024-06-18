@@ -76,7 +76,13 @@ public static class LevelBuilder {
     static void Render() {
         Raylib.BeginDrawing();   
             Raylib.ClearBackground(_clearColor);
-            Raylib.DrawRectangle(_margin, _margin, _tileSize * _rows, _tileSize * _rows, Color.DarkGray);
+            
+            for(int x = 0; x < Rows; x++) {
+                for(int y = 0; y < Rows; y++) {
+                    Raylib.DrawRectangle(x * TileSize + 2 + _margin, y * TileSize + 2 + _margin, TileSize - 4, TileSize - 4, Color.DarkGray);
+                }
+            }
+            //Raylib.DrawRectangle(_margin, _margin, _tileSize * _rows, _tileSize * _rows, Color.DarkGray);
             foreach(GameBlock block in _gameBlocks) {
                 block.Render();
             }
