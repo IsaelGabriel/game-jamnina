@@ -29,7 +29,6 @@ public static class LevelBuilder {
     }
 
     static void HandleInput() {
-        int k = Raylib.GetKeyPressed();
 
         i += (int) (Raylib.IsKeyPressed(KeyboardKey.Down) - Raylib.IsKeyPressed(KeyboardKey.Up));
         j += (int) (Raylib.IsKeyPressed(KeyboardKey.Right) - Raylib.IsKeyPressed(KeyboardKey.Left));
@@ -40,11 +39,12 @@ public static class LevelBuilder {
         GameBlock? currentBlock = GetBlock(j, i);
         if(currentBlock != null) {
             if(currentBlock.GetType().IsSubclassOf(typeof(GameEntity))) {
-                ((GameEntity) currentBlock).mode += (int) (Raylib.IsKeyPressed(KeyboardKey.Equal) - Raylib.IsKeyPressed(KeyboardKey.Minus));
-                
+                ((GameEntity) currentBlock).mode += (int) (Raylib.IsKeyPressed(KeyboardKey.Kp6) - Raylib.IsKeyPressed(KeyboardKey.Kp4));
+                ((GameEntity) currentBlock).health += (int) (Raylib.IsKeyPressed(KeyboardKey.Equal) - Raylib.IsKeyPressed(KeyboardKey.Minus));
             }
         }
 
+        int k = Raylib.GetKeyPressed();
         GameBlock? gb = null; 
         bool setBlock = false;
         while(k != 0) {
