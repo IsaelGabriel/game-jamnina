@@ -23,14 +23,14 @@ public class Player : Entity
         positionDifference.X = Raylib.IsKeyDown(KeyboardKey.D) - Raylib.IsKeyDown(KeyboardKey.A);
         positionDifference.Y = Raylib.IsKeyDown(KeyboardKey.S) - Raylib.IsKeyDown(KeyboardKey.W);
         
-        if(positionDifference.Length() != 0)
-            positionDifference = Vector2.Normalize(positionDifference);
-
-        ((IPositionable)this).TranslatePosition(positionDifference * Raylib.GetFrameTime() * BaseSpeed);
+        if(positionDifference.Length() != 0) {
+            positionDifference = Vector2.Normalize(positionDifference);            
+        }
+        RectCollider? c = collider.MoveWithCollision(positionDifference * Raylib.GetFrameTime() * BaseSpeed);
 
         // Rotate
         Vector2 mousePosition = Raylib.GetMousePosition();
-        Vector2 screenPosition = Raylib.GetWorldToScreen2D(_position, Engine.Camera);
+        Vector2 screenPosition = Raylib.GetWorldToScreen2D(position, Engine.Camera);
         Vector2 rotationVector = -Vector2.Normalize(screenPosition - mousePosition);
 
         _rotation = (float) Math.Atan2(rotationVector.Y, rotationVector.X);
