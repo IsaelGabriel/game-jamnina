@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "eJ7A3qCAdFY=",
+  "success": true,
+  "projectFilePath": "C:\\dev\\cs\\jamnina\\src\\LevelBuilder\\LevelBuilder.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Gab\\.nuget\\packages\\raylib-cs\\6.0.0\\raylib-cs.6.0.0.nupkg.sha512",
+    "C:\\Users\\Gab\\.nuget\\packages\\system.numerics.vectors\\4.5.0\\system.numerics.vectors.4.5.0.nupkg.sha512"
+  ],
+  "logs": []
+}
