@@ -1,0 +1,5 @@
+player 1 2 5
+shooter 1 1 7 90 2
+wall 0 0
+wall 2 1
+wall 1 10
