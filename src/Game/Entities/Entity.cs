@@ -3,10 +3,10 @@ using Raylib_cs;
 
 public class Entity : IUpdatable, IRenderable
 {
+    private readonly RectCollider _collider;
     private static bool _showColliders = false;
     protected int _updatePriority = 0, _renderLayer = (int) RenderLayer.Entity;
     protected bool _visible = true;
-    private RectCollider _collider;
 
     public int updatePriority => _updatePriority;
 

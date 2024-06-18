@@ -20,6 +20,7 @@ public class Projectile : IUpdatable, IRenderable
     public Vector2 position {get=>_collider.position; set=>_collider.position = value;}
     public Vector2 size { get=>_collider.size; set=>_collider.size = value; }
 
+    public RectCollider collider => _collider;
 
     public Projectile(Vector2 center, Vector2 size, float velocity, float angle, float duration) {
         _collider = new RectCollider(center - size/2, size, null);

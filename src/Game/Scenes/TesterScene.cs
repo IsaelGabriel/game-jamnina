@@ -12,7 +12,7 @@ public class TesterScene : IScene
         Vector2 entitySize = Vector2.One * Engine.TileRadius * 2;
         AddObject(_player);
         AddObjectList([
-            new Entity(new Vector2(10, 80), entitySize, 5, Color.SkyBlue),
+            new ShooterEntity(new Vector2(10, -200), 5,(float) -Math.PI, 1.5f),
             new Entity(new Vector2(-50, 100), entitySize, 4, Color.Beige),
             new Entity(new Vector2(150, -100), entitySize, 6, Color.DarkPurple)
         ]);
