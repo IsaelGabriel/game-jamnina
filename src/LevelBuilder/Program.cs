@@ -10,6 +10,8 @@ public static class LevelBuilder {
     public static int TileSize => _tileSize;
     public static int Margin => _margin;
     private static List<GameBlock> _gameBlocks = [];
+    private static int i = 0, j = 0;
+    private static float _selectionThickness = 2f;
 
     static void Main() {
         int windowSize = _tileSize * _rows;
@@ -29,25 +31,46 @@ public static class LevelBuilder {
     static void HandleInput() {
         int k = Raylib.GetKeyPressed();
 
+        i += (int) (Raylib.IsKeyPressed(KeyboardKey.Down) - Raylib.IsKeyPressed(KeyboardKey.Up));
+        j += (int) (Raylib.IsKeyPressed(KeyboardKey.Right) - Raylib.IsKeyPressed(KeyboardKey.Left));
+
+        i = Math.Clamp(i, 0, Rows - 1);
+        j = Math.Clamp(j, 0, Rows - 1);
+
+        GameBlock? currentBlock = GetBlock(j, i);
+        if(currentBlock != null) {
+            if(currentBlock.GetType().IsSubclassOf(typeof(GameEntity))) {
+                ((GameEntity) currentBlock).mode += (int) (Raylib.IsKeyPressed(KeyboardKey.Equal) - Raylib.IsKeyPressed(KeyboardKey.Minus));
+                
+            }
+        }
+
         GameBlock? gb = null; 
+        bool setBlock = false;
         while(k != 0) {
             switch(k - (int) KeyboardKey.Zero) {
                 case 0:
-                    gb = new Player(0, 0);
+                    gb = null;
+                    setBlock = true;
                 break;
                 case 1:
-                    gb = new Wall(0, 0);
+                    gb = new Player(0, 0);
+                    setBlock = true;
                 break;
                 case 2:
+                    gb = new Wall(0, 0);
+                    setBlock = true;
+                break;
+                case 3:
                     gb = new Shooter(0, 0);
                     ((Shooter)gb).rotation = (float)Math.PI / 2.0f;
+                    setBlock = true;
                 break;
                 default: break;
             }
-
             k = Raylib.GetKeyPressed();
         }
-        if(gb != null) SetBlockPosition(gb, 0, 0);
+        if(setBlock) SetBlockPosition(gb, j, i);
     }
 
     static void Render() {
@@ -57,11 +80,13 @@ public static class LevelBuilder {
             foreach(GameBlock block in _gameBlocks) {
                 block.Render();
             }
+            Rectangle selectionRect = new Rectangle(j * TileSize + _margin, i * TileSize + _margin, TileSize, TileSize);
+            Raylib.DrawRectangleLinesEx(selectionRect, _selectionThickness, Color.Green);
 
         Raylib.EndDrawing();
     }
 
-    static void SetBlockPosition(GameBlock block, int x, int y) {
+    static void SetBlockPosition(GameBlock? block, int x, int y) {
         if(x < 0 || x > Rows || y < 0 || y > Rows) return;
         
         List<GameBlock> toRemove = [];
@@ -74,9 +99,11 @@ public static class LevelBuilder {
         foreach(GameBlock gb in toRemove) {
             while(_gameBlocks.Contains(gb)) _gameBlocks.Remove(gb);
         }
-        block.x = x;
-        block.y = y;
-        _gameBlocks.Add(block);
+        if(block != null) {
+            block.x = x;
+            block.y = y;
+            _gameBlocks.Add(block);
+        }
     }
     static GameBlock? GetBlock(int x, int y) {
         foreach(GameBlock gb in _gameBlocks) {

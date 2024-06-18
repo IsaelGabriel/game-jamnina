@@ -51,9 +51,12 @@ public class Player : GameEntity {
 }
 
 public class Shooter : GameEntity {
+    private const int _modesLength = 8;
+    private int _mode = _modesLength;
     private float _interval = 2f;
-    public override int mode { get=>(int) rotation; set{
-        rotation = Math.Abs(value % 12);
+    public override int mode { get=>(int) _mode; set{
+        _mode = value % _modesLength;
+        rotation = (float) _mode / (_modesLength / 2) * (float) Math.PI;
     }}
     public Shooter(int x, int y) : base(x, y)
     {
