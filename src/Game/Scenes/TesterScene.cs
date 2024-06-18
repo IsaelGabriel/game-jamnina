@@ -1,5 +1,4 @@
 using System.Numerics;
-using System.Text.RegularExpressions;
 using Raylib_cs;
 
 public class TesterScene : IScene
@@ -77,5 +76,14 @@ public class TesterScene : IScene
             _renderables.Add((IRenderable) obj);
         if(typeof(T).GetInterfaces().Contains(typeof(IUpdatable)))
             _updatables.Add((IUpdatable) obj);
+    }
+
+    public void RemoveObject<T>(T obj)
+    {
+        if(obj == null) return;
+        if(typeof(T).GetInterfaces().Contains(typeof(IRenderable)))
+            _renderables.Remove((IRenderable) obj);
+        if(typeof(T).GetInterfaces().Contains(typeof(IUpdatable)))
+            _updatables.Remove((IUpdatable) obj);
     }
 }
