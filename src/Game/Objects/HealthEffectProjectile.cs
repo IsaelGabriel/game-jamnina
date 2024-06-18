@@ -20,7 +20,7 @@ public class HealthEffectProjectile : Projectile
                     Vector2 diff = entity.collider.center - collider.center;
                     Vector2 direction = -Vector2.Normalize(-diff);
                     float newAngle = (float) Math.Atan2(direction.Y, direction.X);
-                    HealthEffectProjectile newProjectile = new HealthEffectProjectile(this._ammount, collider.center + direction * Engine.TileRadius, this.size, this.velocity, newAngle, this._duration, EffectSource.Link);
+                    HealthEffectProjectile newProjectile = new HealthEffectProjectile(this._ammount, collider.center + direction * (Engine.TileRadius * 1.75f), this.size, this.velocity, newAngle, this._duration, EffectSource.Link);
                     Engine.CurrentScene?.AddObject(newProjectile);
                 }
             }

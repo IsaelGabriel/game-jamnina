@@ -7,7 +7,7 @@ public static class Engine {
     public const int DefaultWindowWidth = 600;
     public const int DefaultWindowHeight = 600;
     private const string WindowTitle = "Game Jamnina";
-    private const int DefaultTargetFPS = 30;
+    private const int DefaultTargetFPS = 60;
     private static bool _shouldDrawFPS = true;
     private static Camera2D _camera;
     
