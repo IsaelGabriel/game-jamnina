@@ -21,6 +21,7 @@ public class TesterScene : IScene
             new Entity(new Vector2(-50, 100), entitySize, 4, Color.Beige),
             new Entity(new Vector2(150, -100), entitySize, 6, Color.DarkPurple)
         ];
+        _renderables.Add(new Wall(new Vector2(-100, -100)));
     }
 
     public void Start() {
