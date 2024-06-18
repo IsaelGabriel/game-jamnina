@@ -34,5 +34,9 @@ public class Player : Entity
         Vector2 rotationVector = -Vector2.Normalize(screenPosition - mousePosition);
 
         _rotation = (float) Math.Atan2(rotationVector.Y, rotationVector.X);
+
+        if(Raylib.IsKeyPressed(KeyboardKey.Space)) {
+            Engine.CurrentScene?.GetRenderables().Add(new Player(position + Vector2.One * 64));
+        }
     }
 }

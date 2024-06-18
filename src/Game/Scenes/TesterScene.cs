@@ -1,4 +1,5 @@
 using System.Numerics;
+using System.Text.RegularExpressions;
 using Raylib_cs;
 
 public class TesterScene : IScene
@@ -8,27 +9,22 @@ public class TesterScene : IScene
     private List<IRenderable> _renderables = new List<IRenderable>();
     private List<IUpdatable> _updatables = new List<IUpdatable>();
 
-    private List<Entity> _entities;
-
-    public List<Entity> entities => _entities;
-
     public TesterScene() {
         Vector2 entitySize = Vector2.One * Engine.TileRadius * 2;
-        _renderables.Add(_player);
-        _updatables.Add(_player);
-        _entities = (List<Entity>) [
+        AddObject(_player);
+        AddObjectList([
             new Entity(new Vector2(10, 80), entitySize, 5, Color.SkyBlue),
             new Entity(new Vector2(-50, 100), entitySize, 4, Color.Beige),
             new Entity(new Vector2(150, -100), entitySize, 6, Color.DarkPurple)
-        ];
-        _renderables.Add(new Wall(new Vector2(-100, -100)));
+        ]);
     }
 
     public void Start() {
         Engine.SetCameraZoom(Raylib.GetScreenHeight() / TargetViewHeight);
         Engine.SetCameraTarget(-Vector2.One * TargetViewHeight / 2);
         _player.Start();
-        foreach(Entity entity in _entities) {
+        foreach(Entity entity in _updatables) {
+            if(entity == _player) continue;
             entity.Start();
             Link.Links.Add(new Link([_player, entity]));
         }
@@ -37,14 +33,12 @@ public class TesterScene : IScene
     public List<IRenderable> GetRenderables()
     {
         List<IRenderable> renderables = _renderables;
-        renderables.AddRange(_entities); 
         return renderables.Distinct().ToList();
     }
 
     public List<IUpdatable> GetUpdatables()
     {
         List<IUpdatable> updatables = _updatables;
-        updatables.AddRange(_entities);
         return updatables.Distinct().ToList();
     }
 
@@ -70,5 +64,18 @@ public class TesterScene : IScene
             if(renderable.visible) renderable.Render();
         }
     
+    }
+
+    public void AddObjectList<T>(List<T> objs) {
+        foreach(T obj in objs) AddObject<T>(obj);
+    }
+
+    public void AddObject<T>(T obj)
+    {
+        if(obj == null) return;
+        if(typeof(T).GetInterfaces().Contains(typeof(IRenderable)))
+            _renderables.Add((IRenderable) obj);
+        if(typeof(T).GetInterfaces().Contains(typeof(IUpdatable)))
+            _updatables.Add((IUpdatable) obj);
     }
 }
