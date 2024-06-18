@@ -8,7 +8,8 @@ public static class LevelBuilder {
     private static Color _clearColor = Color.DarkBlue;
     public static int Rows => _rows;
     public static int TileSize => _tileSize;
-    private static List<GameBlock> _gameBlocks = new List<GameBlock>();
+    public static int Margin => _margin;
+    private static List<GameBlock> _gameBlocks = [];
 
     static void Main() {
         int windowSize = _tileSize * _rows;
@@ -26,7 +27,27 @@ public static class LevelBuilder {
     }
 
     static void HandleInput() {
+        int k = Raylib.GetKeyPressed();
 
+        GameBlock? gb = null; 
+        while(k != 0) {
+            switch(k - (int) KeyboardKey.Zero) {
+                case 0:
+                    gb = new Player(0, 0);
+                break;
+                case 1:
+                    gb = new Wall(0, 0);
+                break;
+                case 2:
+                    gb = new Shooter(0, 0);
+                    ((Shooter)gb).rotation = (float)Math.PI / 2.0f;
+                break;
+                default: break;
+            }
+
+            k = Raylib.GetKeyPressed();
+        }
+        if(gb != null) SetBlockPosition(gb, 0, 0);
     }
 
     static void Render() {
@@ -43,12 +64,26 @@ public static class LevelBuilder {
     static void SetBlockPosition(GameBlock block, int x, int y) {
         if(x < 0 || x > Rows || y < 0 || y > Rows) return;
         
+        List<GameBlock> toRemove = [];
+
         foreach(GameBlock gb in _gameBlocks) {
-            if(gb.x == x && gb.y == y) _gameBlocks.Remove(gb);
-            break;
+            if(gb.x == x && gb.y == y) {
+                toRemove.Add(gb);
+            }
         }
-        block.x = x * TileSize + _margin;
-        block.y = y * TileSize + _margin;
-        if(!_gameBlocks.Contains(block)) _gameBlocks.Add(block);
+        foreach(GameBlock gb in toRemove) {
+            while(_gameBlocks.Contains(gb)) _gameBlocks.Remove(gb);
+        }
+        block.x = x;
+        block.y = y;
+        _gameBlocks.Add(block);
+    }
+    static GameBlock? GetBlock(int x, int y) {
+        foreach(GameBlock gb in _gameBlocks) {
+            if(gb.x == x && gb.y == y) {
+                return gb;
+            }
+        }
+        return null;
     }
 }
