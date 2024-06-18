@@ -33,8 +33,8 @@ public class GameEntity(int x, int y) : GameBlock(x, y) {
     public override void Render() {
         Vector2 renderCenter = new Vector2(_renderX, _renderY) + Vector2.One * LevelBuilder.TileSize/2;
         float renderAngle = rotation * 180f/ (float)Math.PI;
-        Raylib.DrawPoly(renderCenter, health + 2, (float) LevelBuilder.TileSize/2, renderAngle, _color);
-        Raylib.DrawPoly(renderCenter + new Vector2((float) Math.Cos((double) rotation), (float) Math.Sin((double) rotation)) * LevelBuilder.TileSize/2, health + 2, (float)LevelBuilder.TileSize/5, renderAngle, _color);
+        Raylib.DrawPoly(renderCenter, health, (float) LevelBuilder.TileSize/2, renderAngle, _color);
+        Raylib.DrawPoly(renderCenter + new Vector2((float) Math.Cos((double) rotation), (float) Math.Sin((double) rotation)) * LevelBuilder.TileSize/2, health + 2, (float)LevelBuilder.TileSize/8, renderAngle, _color);
     }
 }
 
@@ -52,8 +52,14 @@ public class Player : GameEntity {
 
 public class Shooter : GameEntity {
     private const int _modesLength = 8;
-    private int _mode = _modesLength;
+    private int _mode = 0;
     private float _interval = 2f;
+    public float interval {
+        get=>_interval;
+        set{
+            _interval = Math.Clamp(value, 0.25f, 15f);
+        }
+    }
     public override int mode { get=>(int) _mode; set{
         _mode = value % _modesLength;
         rotation = (float) _mode / (_modesLength / 2) * (float) Math.PI;
@@ -62,5 +68,5 @@ public class Shooter : GameEntity {
     {
         _color = Color.Red;
     }
-    public override string ToString(){ return $"shooter {x},{y},{health},{rotation},{_interval}"; }
+    public override string ToString(){ return $"shooter {x},{y},{health},{rotation},{interval}"; }
 }

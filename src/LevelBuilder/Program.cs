@@ -1,4 +1,6 @@
 ﻿using Raylib_cs;
+using System.IO;
+using System.Runtime.CompilerServices;
 
 public static class LevelBuilder {
     private const int _margin = 32;
@@ -14,12 +16,21 @@ public static class LevelBuilder {
     private static float _selectionThickness = 2f;
 
     static void Main() {
+        /* Reads all levels from folder
+        foreach(String s in Directory.GetFiles(@"../Levels", "*.gamelevel")) {
+            Console.WriteLine(s.Replace('\\', '/'));
+        }
+        return;
+        */
+        if(!ImportLevel(@"../Levels/sample-level.gamelevel")) return;
+
+
         int windowSize = _tileSize * _rows;
         Raylib.InitWindow(windowSize+_margin*2, windowSize+_margin*2, "Level builder");
         Raylib.SetTargetFPS(_targetFPS);
-        
+        /*
         SetBlockPosition(new Player(0, 0), 0, 0);
-        SetBlockPosition(new Wall(1, 2), 3, 4);
+        SetBlockPosition(new Wall(1, 2), 3, 4);*/
         
         while(!Raylib.WindowShouldClose()) {
             HandleInput();
@@ -118,5 +129,42 @@ public static class LevelBuilder {
             }
         }
         return null;
+    }
+    static bool ImportLevel(string path) {
+        if (!File.Exists(path)) return false;
+
+        foreach(string line in File.ReadLines(path)) {
+            try {
+                string[] items = line.Split(' ');
+                string blockType = items[0];
+                string[] args = items[1].Split(',');
+                int x = int.Parse(args[0]);
+                int y = int.Parse(args[1]);
+                GameBlock? gb = null;
+                switch(blockType) {
+                    case "player":
+                        gb = new Player(x, y) {
+                            health = int.Parse(args[2])
+                        };
+                    break;
+                    case "shooter":
+                        gb = new Shooter(x, y) {
+                            health = int.Parse(args[2]),
+                            mode = int.Parse(args[3]),
+                            interval = int.Parse(args[4])
+                        };
+                    break;
+                    case "wall":
+                        gb = new Wall(x, y);
+                    break;
+                    default: break;
+                }
+                if(gb != null) SetBlockPosition(gb, x, y);
+            }catch(FormatException) {
+                Console.WriteLine($"Invalid format \"{line}\" at \"{path}\"");
+                return false;
+            }
+        }
+        return true;
     }
 }
