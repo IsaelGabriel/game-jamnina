@@ -21,6 +21,7 @@ public class RectCollider : IPositionable
             _size = value;
         }
     }
+    public bool solid = true;
 
     #region Borders
         public Vector2 topLeft {
@@ -130,6 +131,7 @@ public class RectCollider : IPositionable
 
         foreach(RectCollider collider in _colliders) {
             if(collider == this) continue;
+            if(!collider.solid) continue;
             Vector2 trimmedMovement = TrimMovementWithCollider(collider, movement);
             if(!trimmedMovement.Equals(movement)) {
                 collision = collider;

@@ -50,7 +50,6 @@ public class Link : IUpdatable {
                 foreach(Entity entity in link._entities) {
                     if(!entities.Contains(entity)) {
                         entities.Add(entity);
-                        entity.health += healthChange;
                         entities = AffectEntities(entities, healthChange);
                     }
                 }
