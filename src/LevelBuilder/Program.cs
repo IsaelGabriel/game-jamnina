@@ -6,7 +6,6 @@ public static class LevelBuilder {
     public const int ScreenWidth = 600;
     public const int ScreenHeight = 600;
     private static List<GameBlock> _gameBlocks = [];
-    private static float _selectionThickness = 2f;
     private static IScreen _screen = new LevelScreen("");
     public static IScreen CurrentScreen {
         get=> _screen;
