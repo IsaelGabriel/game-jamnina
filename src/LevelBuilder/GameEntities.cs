@@ -4,12 +4,12 @@ using Raylib_cs;
 public class GameBlock(int x, int y)
 {
     public int x = x, y = y;
-    protected int _renderX => this.x * LevelBuilder.TileSize + LevelBuilder.Margin;
-    protected int _renderY => this.y * LevelBuilder.TileSize + LevelBuilder.Margin;
+    protected int _renderX => this.x * LevelScreen.TileSize + (int) LevelScreen.Margin.X;
+    protected int _renderY => this.y * LevelScreen.TileSize + (int) LevelScreen.Margin.Y;
 
     public override string ToString(){ return "\n"; }
     public virtual void Render() {
-        Raylib.DrawRectangle(_renderX, _renderY, LevelBuilder.TileSize, LevelBuilder.TileSize, Color.LightGray);
+        Raylib.DrawRectangle(_renderX, _renderY, LevelScreen.TileSize, LevelScreen.TileSize, Color.LightGray);
     }
 
 }
@@ -17,7 +17,7 @@ public class GameBlock(int x, int y)
 public class Wall(int x, int y) : GameBlock(x, y) {
     public override string ToString(){ return $"wall {x},{y}"; }
     public override void Render() {
-        Raylib.DrawRectangle(_renderX, _renderY, LevelBuilder.TileSize, LevelBuilder.TileSize, Color.LightGray);
+        Raylib.DrawRectangle(_renderX, _renderY, LevelScreen.TileSize, LevelScreen.TileSize, Color.LightGray);
     }
 }
 
@@ -31,10 +31,10 @@ public class GameEntity(int x, int y) : GameBlock(x, y) {
         set=>_health = Math.Max(1, value);
     }
     public override void Render() {
-        Vector2 renderCenter = new Vector2(_renderX, _renderY) + Vector2.One * LevelBuilder.TileSize/2;
+        Vector2 renderCenter = new Vector2(_renderX, _renderY) + Vector2.One * LevelScreen.TileSize/2;
         float renderAngle = rotation * 180f/ (float)Math.PI;
-        Raylib.DrawPoly(renderCenter, health, (float) LevelBuilder.TileSize/2, renderAngle, _color);
-        Raylib.DrawPoly(renderCenter + new Vector2((float) Math.Cos((double) rotation), (float) Math.Sin((double) rotation)) * LevelBuilder.TileSize/2, health + 2, (float)LevelBuilder.TileSize/8, renderAngle, _color);
+        Raylib.DrawPoly(renderCenter, health, (float) LevelScreen.TileSize/2, renderAngle, _color);
+        Raylib.DrawPoly(renderCenter + new Vector2((float) Math.Cos((double) rotation), (float) Math.Sin((double) rotation)) * LevelScreen.TileSize/2, health + 2, (float)LevelScreen.TileSize/8, renderAngle, _color);
     }
 }
 
